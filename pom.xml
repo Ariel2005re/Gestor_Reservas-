@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--
+        spring-boot-starter-parent provee:
+        - versiones compatibles de todas las dependencias (sin conflictos)
+        - configuración de Maven por defecto
+        - plugin para generar el JAR ejecutable
+    -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.3.2</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>com.jazzclub</groupId>
+    <artifactId>jazz-pos</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <name>jazz-pos</name>
+    <description>POS y Comandas en Tiempo Real - Club de Jazz</description>
+
+    <properties>
+        <java.version>21</java.version>
+    </properties>
+
+    <dependencies>
+
+        <!-- ================================================
+             NÚCLEO WEB: incluye Tomcat embebido + Spring MVC
+             Con esto tienes un servidor HTTP listo sin
+             instalar ni configurar nada externo.
+        ================================================ -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- ================================================
+             WEBSOCKETS: comunicación en tiempo real (STOMP)
+             Notificará a barra/cocina cuando llegue un pedido
+        ================================================ -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+
+        <!-- ================================================
+             JPA + HIBERNATE: mapeo objeto-relacional
+             Convierte tus clases Java en tablas de BD y
+             viceversa. Escribes objetos, no SQL a mano.
+        ================================================ -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <!-- ================================================
+             VALIDACIÓN: @NotNull, @Email, @Min en tus DTOs
+             Spring la ejecuta automáticamente antes de que
+             el request llegue al Controller.
+        ================================================ -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <!-- ================================================
+             H2 EN MODO ARCHIVO: base de datos local
+             - Persiste datos en disco (no se pierden al reiniciar)
+             - Incluye consola web en /h2-console para inspeccionar
+             - 'runtime' = solo se usa cuando corre la app, no al compilar
+        ================================================ -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- ================================================
+             FLYWAY: migraciones de base de datos
+             Ejecuta tus archivos .sql en orden al arrancar.
+             Nunca más "¿cuál versión del schema tengo?"
+        ================================================ -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
+
+        <!-- ================================================
+             LOMBOK: elimina boilerplate de Java
+             @Getter, @Setter, @Builder, @NoArgsConstructor
+             se convierten en código en tiempo de compilación.
+             Requiere plugin en IntelliJ (ver nota al pie).
+        ================================================ -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- ================================================
+             DEVTOOLS: reinicio automático al cambiar código
+             Esencial mientras desarrollas. El servidor se
+             recarga solo sin que tengas que pararlo y arrancarlo.
+        ================================================ -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- TEST -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!--
+                Genera un "fat JAR": un solo archivo .jar ejecutable
+                que incluye todas las dependencias y el servidor Tomcat.
+                Para desplegar: java -jar jazz-pos-1.0.0-SNAPSHOT.jar
+            -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
